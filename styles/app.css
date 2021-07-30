@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap');
+
+:root {
+	--gris-300: #383838;
+	--gris-200: #646464;
+	--gris-100: #c3c2c2;
+	--naranja: #da552f;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-size: 1.6rem;
+	font-family: 'PT Sans', sans-serif;
+	background: rgb(240, 240, 240);
+}
+
+button {
+	cursor: pointer;
+	font-family: 'Roboto Slab', serif;
+}
+
+h1,
+h2,
+h3 {
+	margin: 0 0 2rem 0;
+}
+
+h1,
+h2 {
+	font-family: 'Roboto Slab', serif;
+	font-weight: 700;
+}
+
+h3 {
+	font-family: 'PT Sans', sans-serif;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	font-family: 'PT Sans', sans-serif;
+}
+
+.listado-productos {
+	background: #f3f3f3;
+}
+.contenedor {
+	max-width: 1200px;
+	width: 95%;
+	padding: 5rem 0;
+	margin: 0 auto;
+}
+.bg-white {
+	background: #fff;
+}
