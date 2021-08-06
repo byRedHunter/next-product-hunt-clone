@@ -9,6 +9,16 @@ export const Formulario = styled.form`
 		margin-bottom: 4rem;
 		text-align: center;
 	}
+
+	fieldset {
+		margin: 2rem 0;
+		border: 0.1rem solid var(--naranja);
+		padding: 2rem;
+		legend {
+			text-transform: uppercase;
+			font-weight: 800;
+		}
+	}
 `
 
 export const Campo = styled.div`
@@ -28,6 +38,10 @@ export const Campo = styled.div`
 		flex: 100%;
 		padding: 1rem;
 		outline: none;
+		font-family: 'PT Sans', serif;
+		&[type='file'] {
+			padding-left: 0;
+		}
 	}
 
 	p {
@@ -37,12 +51,22 @@ export const Campo = styled.div`
 		color: red;
 	}
 
+	textarea {
+		height: 20rem;
+		flex: 100%;
+		font-family: 'PT Sans', serif;
+		font-size: 1.6rem;
+		padding: 1rem;
+		outline: none;
+	}
+
 	@media screen and (min-width: 600px) {
 		label {
 			// si se encoge, si crece, with en flexbox
 			flex: 0 0 15rem;
 		}
-		input {
+		input,
+		textarea {
 			flex: 1;
 		}
 	}
