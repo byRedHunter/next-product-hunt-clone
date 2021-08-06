@@ -1,3 +1,6 @@
+import { css } from '@emotion/react'
+import router from 'next/router'
+import { useState } from 'react'
 import Layout from '../components/layout/Layout'
 import { Campo, Formulario, InputSubmit } from '../components/ui/Formulario'
 import clientFirebase from '../firebase/firebase'
@@ -11,16 +14,23 @@ const STATE_INITIAL = {
 }
 
 export default function CrearCuenta() {
+	const [error, setError] = useState(false)
+
 	const crearCuenta = async () => {
 		try {
 			await clientFirebase.registrar(nombre, email, password)
+			router.push('/')
 		} catch (error) {
 			console.error('Error al crear usuario ', error)
+			setError(error.message)
 		}
 	}
 
-	const { valores, errores, submitForm, handleChange, handleSubmit } =
-		useValidation(STATE_INITIAL, validarCrearCuenta, crearCuenta)
+	const { valores, errores, handleChange, handleSubmit } = useValidation(
+		STATE_INITIAL,
+		validarCrearCuenta,
+		crearCuenta
+	)
 	const { nombre, email, password } = valores
 
 	return (
@@ -28,6 +38,18 @@ export default function CrearCuenta() {
 			<div className='contenedor'>
 				<Formulario autoComplete='off' onSubmit={handleSubmit}>
 					<h1>Crear Cuenta</h1>
+
+					{error && (
+						<p
+							css={css`
+								text-align: center;
+								margin-bottom: 2rem;
+								color: #f55;
+							`}
+						>
+							{error}
+						</p>
+					)}
 
 					<Campo error={errores?.nombre}>
 						<label htmlFor='nombre'>Nombre</label>

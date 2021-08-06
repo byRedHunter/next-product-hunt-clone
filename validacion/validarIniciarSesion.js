@@ -1,10 +1,5 @@
-export default function validarCrearCuenta(valores) {
+export default function validarIniciarSesion(valores) {
 	let errores = {}
-
-	// validar nombre de usuario
-	if (!valores.nombre) {
-		errores.nombre = 'El nombre es obligatorio'
-	}
 
 	// validar el email
 	if (!valores.email) {

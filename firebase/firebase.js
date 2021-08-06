@@ -17,6 +17,11 @@ class Firebase {
 
 		return await newUser.user.updateProfile({ displayName: nombre })
 	}
+
+	// iniciar sesion
+	async login(email, password) {
+		return this.auth.signInWithEmailAndPassword(email, password)
+	}
 }
 
 const clientFirebase = new Firebase()
