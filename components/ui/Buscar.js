@@ -28,7 +28,11 @@ const Buscar = () => {
 	return (
 		<form
 			css={css`
+				display: none;
 				position: relative;
+				@media screen and (min-width: 800px) {
+					display: initial;
+				}
 			`}
 		>
 			<InputText type='text' placeholder='Buscar Productos' />

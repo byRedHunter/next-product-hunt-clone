@@ -16,15 +16,16 @@ export const Campo = styled.div`
 	display: flex;
 	align-items: center;
 	position: relative;
+	flex-wrap: wrap;
 
 	label {
 		// si se encoge, si crece, with en flexbox
-		flex: 0 0 15rem;
+		flex: 100%;
 		font-size: 1.8rem;
 	}
 
 	input {
-		flex: 1;
+		flex: 100%;
 		padding: 1rem;
 		outline: none;
 	}
@@ -34,6 +35,16 @@ export const Campo = styled.div`
 		top: calc(100% + 0.5rem);
 		left: 15rem;
 		color: red;
+	}
+
+	@media screen and (min-width: 600px) {
+		label {
+			// si se encoge, si crece, with en flexbox
+			flex: 0 0 15rem;
+		}
+		input {
+			flex: 1;
+		}
 	}
 `
 
