@@ -1,5 +1,6 @@
 import Layout from '../components/layout/Layout'
 import { Campo, Formulario, InputSubmit } from '../components/ui/Formulario'
+import clientFirebase from '../firebase/firebase'
 import useValidation from '../hooks/useValidation'
 import validarCrearCuenta from '../validacion/validarCrearCuenta'
 
@@ -10,8 +11,12 @@ const STATE_INITIAL = {
 }
 
 export default function CrearCuenta() {
-	const crearCuenta = () => {
-		console.log('creando cuenta')
+	const crearCuenta = async () => {
+		try {
+			await clientFirebase.registrar(nombre, email, password)
+		} catch (error) {
+			console.error('Error al crear usuario ', error)
+		}
 	}
 
 	const { valores, errores, submitForm, handleChange, handleSubmit } =
