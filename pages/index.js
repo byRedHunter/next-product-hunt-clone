@@ -16,6 +16,7 @@ export default function Home() {
 		}
 
 		obtenerProdutos()
+		// eslint-disable-next-line
 	}, [])
 
 	function manejarSnapshot(snapshot) {
