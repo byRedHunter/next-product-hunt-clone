@@ -55,6 +55,10 @@ a {
 	font-family: 'PT Sans', sans-serif;
 }
 
+img {
+	max-width: 100%;
+}
+
 .listado-productos {
 	background: #f3f3f3;
 }

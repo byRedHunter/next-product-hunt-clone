@@ -5,7 +5,8 @@ const Boton = styled.a`
 	text-transform: uppercase;
 	border: 0.1rem solid #d1d1d1;
 	padding: 0.8rem 2rem;
-	margin-right: 1rem;
+	margin: 2rem 0;
+	display: block;
 	background-color: ${(props) => (props.bgColor ? '#da552f' : 'white')};
 	color: ${(props) => (props.bgColor ? 'white' : '#da552f')};
 	cursor: pointer;

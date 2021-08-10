@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
+import Link from 'next/link'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import { es } from 'date-fns/locale'
 import { css } from '@emotion/react'
@@ -105,7 +106,9 @@ export const DetallesProducto = ({ product }) => {
 				</div>
 
 				<div>
-					<Titulo>{producto}</Titulo>
+					<Link href='/productos/[id]' as={`/productos/${id}`} passHref>
+						<Titulo>{producto}</Titulo>
+					</Link>
 					<p
 						css={css`
 							color: #555;
