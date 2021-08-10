@@ -14,12 +14,21 @@ const ContenedorProducto = styled.div`
 	@media screen and (min-width: 768px) {
 		display: grid;
 		grid-template-columns: 2fr 1fr;
-		column-gap: 2rem;
+		gap: 2rem;
 	}
 
 	img {
 		margin: 2rem 0;
 	}
+`
+
+const CreadorProducto = styled.span`
+	background: var(--gris-200);
+	padding: 0.3rem 0.5rem;
+	font-size: 1.4rem;
+	border-radius: 0.5rem;
+	color: #eee;
+	margin-left: 1rem;
 `
 
 const Producto = () => {
@@ -33,9 +42,11 @@ const Producto = () => {
 
 	const [productoActual, setProductoActual] = useState({})
 	const [error, setError] = useState(false)
+	const [comment, setComment] = useState({ mensaje: '' })
+	const [consultarDB, setConsultarDB] = useState(true)
 
 	useEffect(() => {
-		if (id) {
+		if (id && consultarDB) {
 			const obtenerProducto = async () => {
 				const productQuery = await clientFirebase.db
 					.collection('productos')
@@ -46,6 +57,7 @@ const Producto = () => {
 			}
 
 			obtenerProducto()
+			setConsultarDB(false)
 		}
 
 		// eslint-disable-next-line
@@ -61,7 +73,77 @@ const Producto = () => {
 		urlImagen,
 		votos,
 		creador,
+		haVotado,
 	} = productoActual
+
+	const votarProducto = async () => {
+		if (!usuario) {
+			return router.push('/login')
+		}
+
+		// verificar si el usuario actual ha votado
+		if (haVotado.includes(usuario.uid)) return
+
+		// obtener y sumar votos
+		const nuevoTotal = votos + 1
+
+		// guardar el id del usuario que ha votado
+		const nuevoHaVotado = [...haVotado, usuario.uid]
+
+		// actualizar en la db
+		await clientFirebase.db
+			.collection('productos')
+			.doc(id)
+			.update({ votos: nuevoTotal, haVotado: nuevoHaVotado })
+
+		// actualizar en el state
+		setProductoActual({ ...productoActual, votos: nuevoTotal })
+
+		setConsultarDB(true)
+	}
+
+	// funciones para crear comentario
+	const comentarioChage = (e) => {
+		setComment({ ...comment, [e.target.name]: e.target.value })
+	}
+
+	// identificar si el comentario es del creador
+	const esCreador = (id) => {
+		if (creador.id === id) {
+			return true
+		}
+
+		return false
+	}
+
+	const agregarComentario = async (e) => {
+		e.preventDefault()
+
+		if (!usuario) {
+			return router.push('/login')
+		}
+
+		// informacion extra al comentario
+		comment.usuarioId = usuario.uid
+		comment.usuarioNombre = usuario.displayName
+
+		const nuevoComentarios = [...comentarios, comment]
+
+		// actualiza en la db
+		await clientFirebase.db
+			.collection('productos')
+			.doc(id)
+			.update({ comentarios: nuevoComentarios })
+
+		// actualizar en el state
+		setProductoActual({
+			...productoActual,
+			comentarios: nuevoComentarios,
+		})
+
+		setComment({ ...comment, mensaje: '' })
+		setConsultarDB(true)
+	}
 
 	return (
 		<Layout>
@@ -69,7 +151,7 @@ const Producto = () => {
 				{error && <Error404 />}
 
 				{Object.keys(productoActual).length === 0 ? (
-					<p>Cargando...</p>
+					!error && <p>Cargando...</p>
 				) : (
 					<>
 						<h1
@@ -104,9 +186,14 @@ const Producto = () => {
 											Agrega tu comentario
 										</h2>
 
-										<form>
+										<form onSubmit={agregarComentario}>
 											<Campo>
-												<input type='text' name='mensaje' />
+												<input
+													type='text'
+													name='mensaje'
+													onChange={comentarioChage}
+													value={comment.mensaje}
+												/>
 											</Campo>
 
 											<InputSubmit type='submit' value='Agregar Comentario' />
@@ -122,18 +209,55 @@ const Producto = () => {
 									Comentarios
 								</h2>
 
-								{/* {comentarios.map((comentario) => (
-							<li key={comentario.id}>
-								<p> {comentario.nombre} </p>
-								<p> Escriot por: {comentario.usuarioNombre} </p>
-							</li>
-						))} */}
+								{comentarios.length === 0 ? (
+									<p>Aún no hay comentarios</p>
+								) : (
+									<ul>
+										{comentarios.map((comentario) => (
+											<li
+												key={comentario.usuarioId + Date.now().toString()}
+												css={css`
+													border: 0.1rem solid var(--naranja);
+													padding: 0.5rem;
+													margin-bottom: 0.5rem;
+												`}
+											>
+												<p> {comentario.mensaje} </p>
+												<p
+													css={css`
+														margin-top: 1rem;
+													`}
+												>
+													{' '}
+													<span
+														css={css`
+															font-weight: bold;
+														`}
+													>
+														Escriot por:
+													</span>{' '}
+													{comentario.usuarioNombre}{' '}
+													{esCreador(comentario.usuarioId) && (
+														<CreadorProducto>Es Creador</CreadorProducto>
+													)}
+												</p>
+											</li>
+										))}
+									</ul>
+								)}
 							</div>
 
-							<aside>
+							<aside
+								css={css`
+									margin-top: 4rem;
+									@media screen and (min-width: 768px) {
+										margin-top: 0;
+									}
+								`}
+							>
 								<p> {votos} Votos </p>
 
-								{usuario && <Boton>Votar</Boton>}
+								{usuario && <Boton onClick={votarProducto}>Votar</Boton>}
 
 								<Boton target='_blank' bgColor={true} href={url}>
 									Visitar Web

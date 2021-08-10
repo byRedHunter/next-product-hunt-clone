@@ -44,6 +44,7 @@ export default function NuevoProducto() {
 				id: usuario.uid,
 				nombre: usuario.displayName,
 			},
+			haVotado: [],
 		}
 
 		try {
