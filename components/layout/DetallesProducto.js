@@ -119,7 +119,7 @@ export const DetallesProducto = ({ product }) => {
 
 					<Comentarios>
 						<div>
-							<img
+							<Imagen
 								src='/static/images/comentario.png'
 								alt='Icono de comentario'
 							/>

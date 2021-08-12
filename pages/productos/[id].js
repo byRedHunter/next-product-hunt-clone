@@ -22,6 +22,12 @@ const ContenedorProducto = styled.div`
 	}
 `
 
+const Imagen = styled.img`
+	border-radius: 0.3rem;
+	width: 100%;
+	max-width: 100%;
+`
+
 const CreadorProducto = styled.span`
 	background: var(--gris-200);
 	padding: 0.3rem 0.5rem;
@@ -193,7 +199,7 @@ const Producto = () => {
 									Por: {creador.nombre} de la empresa {empresa}
 								</p>
 
-								<img src={urlImagen} alt={producto} />
+								<Imagen src={urlImagen} alt={producto} />
 
 								<p> {descripcion} </p>
 
