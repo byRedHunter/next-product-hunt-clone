@@ -145,6 +145,27 @@ const Producto = () => {
 		setConsultarDB(true)
 	}
 
+	// funcion que revisa que el creador del producto sea el mismo que esta autenticado
+	const puedeBorrar = () => {
+		if (!usuario) return false
+
+		if (creador.id === usuario.uid) return true
+	}
+
+	// elimina producto de la db
+	const eliminarProducto = async () => {
+		if (!usuario) return router.push('/login')
+		if (creador.id !== usuario.uid) return router.push('/')
+
+		try {
+			await clientFirebase.db.collection('productos').doc(id).delete()
+
+			router.push('/')
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	return (
 		<Layout>
 			<div className='contenedor'>
@@ -264,6 +285,10 @@ const Producto = () => {
 								</Boton>
 							</aside>
 						</ContenedorProducto>
+
+						{puedeBorrar() && (
+							<Boton onClick={eliminarProducto}>Eliminar Producto</Boton>
+						)}
 					</>
 				)}
 			</div>
